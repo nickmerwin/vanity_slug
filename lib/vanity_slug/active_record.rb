@@ -9,7 +9,8 @@ ActiveSupport.on_load :active_record do
 
         opts = {
           field_to_slug: :name,
-          slug_field: :slug
+          slug_field: :slug,
+          action: "/#{self.to_s.tableize}/:id"
         }.merge opts
 
         class_attribute :has_vanity_slug_opts
@@ -32,7 +33,7 @@ ActiveSupport.on_load :active_record do
       module InstanceMethods
 
         def get_vanity_action
-          action = self.class.has_vanity_slug_opts[:action] 
+          action = self.class.has_vanity_slug_opts[:action]
 
           if action.is_a?(Proc)
             self.instance_eval &action
@@ -75,23 +76,13 @@ ActiveSupport.on_load :active_record do
             errors.add :slug, "already exists"
           end
 
-          if defined?(Rails)
-            begin
-              if Rails.application.routes.recognize_path(slug) 
-                errors.add :slug, "conflicts with another url"
-              end
-            rescue ActionController::RoutingError
-            end
+          if VanitySlug.check_route_collision(slug_to_check)
+            errors.add :slug, "conflicts with another url"
           end
         end
 
         def vanity_slug_exists?(potential_slug)
-          if defined?(Rails)
-            begin
-              return true if Rails.application.routes.recognize_path(potential_slug) 
-            rescue ActionController::RoutingError
-            end
-          end
+          return true if VanitySlug.check_route_collision(potential_slug) 
 
           VanitySlug.classes.any? do |klass|
             scope = klass.has_vanity_slug_opts[:uniqueness_scope] 
@@ -128,8 +119,18 @@ ActiveSupport.on_load :active_record do
         
         obj.get_vanity_action + File.extname(path)
       end
-    end
 
+      def check_route_collision(path)
+        if defined?(Rails)
+          begin
+            return true if Rails.application.routes.recognize_path(path)
+          rescue ActionController::RoutingError
+            false
+          end
+        end
+      end
+
+    end
   end
 
   ActiveRecord::Base.extend VanitySlug::ActiveRecord

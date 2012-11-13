@@ -1,3 +1,5 @@
+require "active_support/all"
+
 require "vanity_slug/version"
 require "vanity_slug/active_record"
 

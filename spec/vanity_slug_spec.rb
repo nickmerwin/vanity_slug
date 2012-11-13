@@ -8,8 +8,7 @@ VanitySlug.path_scope = Proc.new{|env|
 class Post < ActiveRecord::Base
   attr_accessible :title, :site
 
-  has_vanity_slug action: "/posts/:id", 
-    field_to_slug: :title, 
+  has_vanity_slug field_to_slug: :title,
     uniqueness_scope: :site_id
 
   belongs_to :site

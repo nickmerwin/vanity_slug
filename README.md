@@ -26,11 +26,11 @@ Or install it yourself as:
 
 ### Options
   
-  * action: route vanity slug will resolve to, "/posts/:id"
-  * field_to_slug: which column to use in vanity slug generation
-  * slug_field: which column to store generated slug
+  * action: route vanity slug will resolve to (default: RESTful show route i.e. "/posts/:id")
+  * field_to_slug: which column to use in vanity slug generation (default: :name)
+  * slug_field: which column to store generated slug (default: :slug)
   * uniqueness_scope: method or attribute to use as uniqueness check in slug
-    generation
+    generation (default: nil)
 
 #### Config
 
@@ -38,7 +38,12 @@ Or install it yourself as:
     VanitySlug.path_scope Proc.new { |env| { } }
   ```
 
-Use to scope the finder based on rack env, i.e. host parameter.
+Use to scope the finder based on rack env, i.e. host parameter. Should return a hash suitable for a `where` relational argument.
+
+### Gotchas
+
+  * no catch all routes may be used in Rails, otherwise the route collision check
+    will always find a matching route
 
 ## Examples:
 
