@@ -32,7 +32,7 @@ Or install it yourself as:
   * action: route vanity slug will resolve to (default: RESTful show route i.e. "/posts/:id"). Route must be defined.
   * field_to_slug: which column to use in vanity slug generation (default: :name).
   * slug_field: which column to store generated slug (default: :slug).
-  * uniqueness_scope: method or attribute to use as uniqueness check in slug
+  * uniqueness_scope: method or attribute to use as uniqueness scope in slug
     generation (default: nil).
 
 #### Config
@@ -52,20 +52,17 @@ Use to scope the finder based on rack env, i.e. host parameter. Should return a 
 
   ```ruby
     class Post < ActiveRecord::Base
-      attr_accessible :title, :site
+      attr_accesible :title
 
-      has_vanity_slug action: "/posts/:id", 
-        field_to_slug: :title, 
-        uniqueness_scope: :site_id
+      has_vanity_slug field_to_slug: :title, uniqueness_scope: :site_id
 
       belongs_to :site
     end
 
     class Category < ActiveRecord::Base
-      attr_accessible :name, :site
+      attr_accesible :name
 
-      has_vanity_slug action: "/categories/:id/slug", 
-        slug_field: :permalink
+      has_vanity_slug action: "/categories/:id/slug", slug_field: :permalink
 
       belongs_to :site
     end
@@ -79,7 +76,7 @@ Use to scope the finder based on rack env, i.e. host parameter. Should return a 
 
   ```ruby
     VanitySlug.path_scope = Proc.new{|env|
-      { organization_id: Organization.find_by_host(env["HTTP_HOST"]).try(:id) }
+      { site_id: Site.find_by_domain(env["HTTP_HOST"]).try(:id) }
     }
   ```
 
