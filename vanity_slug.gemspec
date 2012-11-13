@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["nick@lemurheavy.com"]
   gem.description   = %q{root level Vanity Slug for any model}
   gem.summary       = %q{easily add vanity slugs}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/nickmerwin/vanity_slug"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
