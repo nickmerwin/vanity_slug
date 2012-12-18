@@ -28,21 +28,22 @@ class Site < ActiveRecord::Base
 end
 
 describe VanitySlug do
+  let(:str) { "slug me" }
+  let(:str_slugged) { "slug-me" }
+
+  before do
+    @site_1 = Site.create domain: "a.com"
+    @site_2 = Site.create domain: "b.com"
+
+    @post_1 = Post.create title: str, site: @site_1
+    @post_2 = Post.create title: str, site: @site_1
+    @post_3 = Post.create title: str, site: @site_2
+
+    @category_1 = Category.create name: str, site: @site_1
+    @category_2 = Category.create name: str, site: @site_2
+  end
+
   context "setting slugs" do
-    let(:str) { "slug me" }
-    let(:str_slugged) { "slug-me" }
-
-    before do
-      @site_1 = Site.create domain: "a.com"
-      @site_2 = Site.create domain: "b.com"
-
-      @post_1 = Post.create title: str, site: @site_1
-      @post_2 = Post.create title: str, site: @site_1
-      @post_3 = Post.create title: str, site: @site_2
-
-      @category_1 = Category.create name: str, site: @site_1
-      @category_2 = Category.create name: str, site: @site_2
-    end
 
     it { @post_1.slug.should eq str_slugged }
     it { @post_2.slug.should eq str_slugged+"-1" }
@@ -79,5 +80,15 @@ describe VanitySlug do
       env = {"HTTP_HOST" => "c.com", "PATH_INFO" => "/#{@category_2.permalink}"}
       VanitySlug.find(env).should be_false
     end
+  end
+
+  context "updating slug source column" do
+    let(:new_title) { "#{str} edit" }
+    before do
+      @post_1.update_attributes title: new_title
+    end
+
+    it { @post_1.should be_valid }
+    it { @post_1.title.should eq new_title }
   end
 end

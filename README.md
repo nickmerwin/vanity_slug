@@ -1,6 +1,6 @@
 # VanitySlug
 
-Add unique vanity urls to any model without use of redirects. Middleware matches routes that don't resolve with the Rails router and checks if they match a slug from any vanity-slug enabled model. If found, the env["PATH_INFO"] is changed like so:
+Add unique vanity urls to any model without use of redirects. Middleware matches routes that don't resolve with the Rails router and checks if they match a slug from any vanity-slug enabled model. If found, the `env["PATH_INFO"]` is changed like so:
 
     Given a Post with slug "my-post-title" and id 1, and a Category with slug "the-category" and id 2:
 

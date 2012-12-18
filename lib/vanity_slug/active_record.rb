@@ -68,7 +68,7 @@ ActiveSupport.on_load :active_record do
               klass.slug_field => slug_to_check 
             }))
 
-            finder = finder.where("id != ?", id) if klass == self.class
+            finder = finder.where("id != ?", self.id) if klass.to_s == self.class.to_s
             finder.count > 0
           end
 
