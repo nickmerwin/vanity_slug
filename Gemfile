@@ -9,5 +9,6 @@ group :test do
   gem 'activerecord'
   gem 'sqlite3'
   gem 'rake'
-  gem 'coveralls', require: false, git: "", branch: "token_security"
+  gem 'coveralls', require: false, 
+    git: "git://github.com/lemurheavy/coveralls-ruby.git", branch: "secure_token"
 end
