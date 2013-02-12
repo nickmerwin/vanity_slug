@@ -9,4 +9,6 @@ group :test do
   gem 'activerecord'
   gem 'sqlite3'
   gem 'simplecov', require: false
+  gem 'rake'
+  gem 'coveralls', require: false
 end

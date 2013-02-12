@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'simplecov'
-SimpleCov.start
+require 'coveralls'
+Coveralls.wear!
 
 require 'active_support/all'
 require 'vanity_slug'
