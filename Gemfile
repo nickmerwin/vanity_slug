@@ -8,7 +8,6 @@ group :test do
   gem 'debugger'
   gem 'activerecord'
   gem 'sqlite3'
-  gem 'simplecov', require: false
   gem 'rake'
-  gem 'coveralls', require: false
+  gem 'coveralls', require: false, git: "", branch: "token_security"
 end
