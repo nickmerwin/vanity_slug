@@ -11,3 +11,4 @@ group :test do
   gem 'rake'
   gem 'coveralls', '>=0.5.7', require: false
 end
+
