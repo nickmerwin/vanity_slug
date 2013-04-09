@@ -9,5 +9,5 @@ group :test do
   gem 'activerecord'
   gem 'sqlite3'
   gem 'rake'
-  gem 'coveralls', '>=0.6.1', require: false
+  gem 'coveralls', git: 'https://github.com/lemurheavy/coveralls-ruby.git', require: false
 end
