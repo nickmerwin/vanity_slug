@@ -17,7 +17,7 @@ end
 class Category < ActiveRecord::Base
   attr_accessible :name, :site
 
-  has_vanity_slug action: "/categories/:id/slug", 
+  has_vanity_slug action: "/categories/:id/slug",
     slug_field: :permalink
 
   belongs_to :site
@@ -39,6 +39,10 @@ describe VanitySlug do
     @post_2 = Post.create title: str, site: @site_1
     @post_3 = Post.create title: str, site: @site_2
 
+    10.times do
+      Post.create title: str, site: @site_1
+    end
+
     @category_1 = Category.create name: str, site: @site_1
     @category_2 = Category.create name: str, site: @site_2
   end
@@ -48,8 +52,10 @@ describe VanitySlug do
     it { @post_1.slug.should eq str_slugged }
     it { @post_2.slug.should eq str_slugged+"-1" }
     it { @post_3.slug.should eq str_slugged }
-    it { @category_1.permalink.should eq str_slugged+"-2" }
+    it { @category_1.permalink.should eq str_slugged+"-12" }
     it { @category_2.permalink.should eq str_slugged+"-1" }
+
+    it { Post.last.slug.should eq str_slugged + "-11" }
 
     it do
       env = {"HTTP_HOST" => @site_1.domain, "PATH_INFO" => "/#{@post_1.slug}"}
@@ -78,7 +84,7 @@ describe VanitySlug do
 
     it do
       env = {"HTTP_HOST" => "c.com", "PATH_INFO" => "/#{@category_2.permalink}"}
-      VanitySlug.find(env).should be_false
+      VanitySlug.find(env).should be false
     end
   end
 

@@ -5,11 +5,8 @@ gemspec
 
 group :test do
   gem 'rspec'
-  gem 'debugger'
-  gem 'activerecord'
+  gem 'activerecord', '3.2.19'
   gem 'sqlite3'
   gem 'rake'
   gem 'coveralls', '>=0.5.7', require: false
 end
-
-
