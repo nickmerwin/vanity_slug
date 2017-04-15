@@ -11,3 +11,4 @@ group :test do
   gem 'rake'
   gem 'coveralls', git: 'https://github.com/lemurheavy/coveralls-ruby.git', require: false
 end
+
