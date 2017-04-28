@@ -17,8 +17,8 @@ RSpec.configure do |config|
 end
 
 def silence
-  return yield if ENV['silence'] == 'false'
-  
+  return yield if ENV['silence'] == 'false' || !defined?(silence_stream)
+
   silence_stream(STDOUT) do
     yield
   end

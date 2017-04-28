@@ -6,7 +6,7 @@ VanitySlug.path_scope = Proc.new{|env|
 }
 
 class Post < ActiveRecord::Base
-  attr_accessible :title, :site
+  attr_accessor :title, :site
 
   has_vanity_slug field_to_slug: :title,
     uniqueness_scope: :site_id
@@ -15,16 +15,16 @@ class Post < ActiveRecord::Base
 end
 
 class Category < ActiveRecord::Base
-  attr_accessible :name, :site
+  attr_accessor :name, :site
 
-  has_vanity_slug action: "/categories/:id/slug", 
+  has_vanity_slug action: "/categories/:id/slug",
     slug_field: :permalink
 
   belongs_to :site
 end
 
 class Site < ActiveRecord::Base
-  attr_accessible :domain
+  attr_accessor :domain
 end
 
 describe VanitySlug do

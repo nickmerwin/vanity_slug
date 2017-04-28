@@ -5,9 +5,8 @@ gemspec
 
 group :test do
   gem 'rspec'
-  gem 'debugger'
   gem 'activerecord'
   gem 'sqlite3'
   gem 'rake'
-  gem 'coveralls', git: 'https://github.com/lemurheavy/coveralls-ruby.git', require: false
+  gem 'coveralls'
 end
