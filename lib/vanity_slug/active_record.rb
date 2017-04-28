@@ -61,11 +61,11 @@ ActiveSupport.on_load :active_record do
           slug_to_check = send(self.class.slug_field)
 
           exists = VanitySlug.classes.any? do |klass|
-            scope = klass.has_vanity_slug_opts[:uniqueness_scope] 
+            scope = klass.has_vanity_slug_opts[:uniqueness_scope]
             conditions = scope ? { scope => send(scope) } : {}
 
-            finder = klass.where(conditions.merge({ 
-              klass.slug_field => slug_to_check 
+            finder = klass.where(conditions.merge({
+              klass.slug_field => slug_to_check
             }))
 
             finder = finder.where("id != ?", self.id) if klass.to_s == self.class.to_s
@@ -82,10 +82,10 @@ ActiveSupport.on_load :active_record do
         end
 
         def vanity_slug_exists?(potential_slug)
-          return true if VanitySlug.check_route_collision(potential_slug) 
+          return true if VanitySlug.check_route_collision(potential_slug)
 
           VanitySlug.classes.any? do |klass|
-            scope = klass.has_vanity_slug_opts[:uniqueness_scope] 
+            scope = klass.has_vanity_slug_opts[:uniqueness_scope]
             conditions = scope ? { scope => send(scope) } : {}
             klass.exists? conditions.merge({ klass.slug_field => potential_slug })
           end
@@ -96,7 +96,7 @@ ActiveSupport.on_load :active_record do
     class << self
       attr_accessor :path_scope
       attr_accessor :classes
-      
+
       def add_class(klass)
         @classes ||= []
         @classes << klass unless @classes.include?(klass)
@@ -116,14 +116,14 @@ ActiveSupport.on_load :active_record do
             .first
         end
         return false unless obj
-        
+
         obj.get_vanity_action + File.extname(path)
       end
 
       def check_route_collision(path)
         if defined?(Rails)
           begin
-            return true if Rails.application.routes.recognize_path(path)
+            return true if Rails.application.routes.recognize_path(path) || Rails.application.routes.recognize_path(path, method: :post)
           rescue ActionController::RoutingError
             false
           end
