@@ -122,11 +122,10 @@ ActiveSupport.on_load :active_record do
 
       def check_route_collision(path)
         if defined?(Rails)
-          begin
-            return true if Rails.application.routes.recognize_path(path) || Rails.application.routes.recognize_path(path, method: :post)
-          rescue ActionController::RoutingError
-            false
-          end
+          found = true
+          found = !!Rails.application.routes.recognize_path(path) rescue false
+          found = !!Rails.application.routes.recognize_path(path, method: :post) rescue false
+          found
         end
       end
 
