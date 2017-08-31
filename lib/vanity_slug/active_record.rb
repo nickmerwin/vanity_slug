@@ -50,7 +50,7 @@ ActiveSupport.on_load :active_record do
             potential_slug += "-#{i}"
 
             while vanity_slug_exists?(potential_slug)
-              potential_slug.gsub!(/-\d$/, "-#{i += 1}")
+              potential_slug.gsub!(/-\d*$/, "-#{i += 1}")
             end
           end
 
